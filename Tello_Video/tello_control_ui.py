@@ -84,20 +84,21 @@ class TelloUI:
                 self.frame = self.tello.read()
                 if self.frame is None or self.frame.size == 0:
                     continue 
-            
-            # transfer the format from frame to image         
+               
+            # transfer the format from frame to image
+               
                 image = Image.fromarray(self.frame)
 
             # we found compatibility problem between Tkinter,PIL and Macos,and it will 
             # sometimes result the very long preriod of the "ImageTk.PhotoImage" function,
             # so for Macos,we start a new thread to execute the _updateGUIImage function.
-                if system =="Windows" or system =="Linux":                
-                    self._updateGUIImage(image)
+                #if system =="Windows" or system =="Linux":                
+                self._updateGUIImage(image)
 
-                else:
-                    thread_tmp = threading.Thread(target=self._updateGUIImage,args=(image,))
-                    thread_tmp.start()
-                    time.sleep(0.03)
+                #else:
+                #thread_tmp = threading.Thread(target=self._updateGUIImage,args=(image,))
+                #thread_tmp.start()
+                #time.sleep(0.03)
         #except getopt.GetoptError, e:
         except RuntimeError:
             print("[INFO] caught a RuntimeError")

@@ -32,12 +32,17 @@ class Tello:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # socket for sending cmd
         
         self.telloVideo = cv2.VideoCapture("udp://@0.0.0.0:11111")
-        # self.telloVideo = cv2.VideoCapture(0) # for debugging purpose 
+        # self.telloVideo = cv2.VideoCapture(0) # for debugging purpose
+        # thread for receiving video
+        self.receive_video_thread = threading.Thread(target=self._receive_video_thread)
+        self.receive_video_thread.daemon = True
+
+        self.receive_video_thread.start()
         self.tello_address = (tello_ip, tello_port)
-        self.local_video_port = 11111  # port for receiving video stream
+        #self.local_video_port = 11111  # port for receiving video stream
         self.last_height = 0
         self.socket.bind((local_ip, local_port))
-        self.scale = 3 # For improved video performance on an Raspberry PI 3+ 
+        self.scale = 2 # For improved video performance on an Raspberry PI 3+ 
 
         # thread for receiving cmd ack
         self.receive_thread = threading.Thread(target=self._receive_thread)
@@ -48,14 +53,16 @@ class Tello:
         # to receive video -- send cmd: command, streamon
         self.socket.sendto(b'command', self.tello_address)
         print ('sent: command')
+        self.socket.sendto(b'command', self.tello_address)
+        print ('sent: command')
         self.socket.sendto(b'streamon', self.tello_address)
         print ('sent: streamon')
-
-        # thread for receiving video
-        self.receive_video_thread = threading.Thread(target=self._receive_video_thread)
-        self.receive_video_thread.daemon = True
-
-        self.receive_video_thread.start()
+        self.socket.sendto(b'streamon', self.tello_address)
+        print ('sent: streamon')
+        self.socket.sendto(b'streamon', self.tello_address)
+        print ('sent: streamon')
+        self.socket.sendto(b'streamon', self.tello_address)
+        print ('sent: streamon')    
 
     def __del__(self):
         """Closes the local socket."""
@@ -96,13 +103,9 @@ class Tello:
         Runs as a thread, sets self.frame to the most recent frame Tello captured.
 
         """
-        packet_data = ""
         while True:
             # Capture frame-by-framestreamon
-            try: 
-                ret, frame = self.telloVideo.read()
-            except socket.error as exc:
-                print ("Caught exception socket.error : %s" % exc)
+            ret, frame = self.telloVideo.read()
             
             if(ret): 
             # Our operations on the frame come here
@@ -110,10 +113,12 @@ class Tello:
                 # print("height :", height, " width :", width)
                 new_h=int(height/self.scale)
                 new_w=int(width/self.scale)
-        
-        # return the resulting frame
-            
-                self.frame = cv2.resize(frame, (new_w, new_h))
+                
+            # return the resulting frame
+                b,g,r=cv2.split(cv2.resize(frame, (new_w, new_h)))
+                frame0=cv2.merge([r,g,b])
+                self.frame = frame0
+                
                     
     def send_command(self, command):
         """
