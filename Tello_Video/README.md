@@ -2,7 +2,7 @@
 
 This is an example using the Tello SDK v1.3.0.0 and above to receive video stream from Tello camera,decode the video stream and show the image by GUI.
 
- - Written in Python 2.7
+ - Written in Python 3.7.3
  - Tello SDK v1.3.0.0
  - This example includes a simple UI build with Tkinter to interact with Tello
  - Interactive control of Tello based on human movement is achieved via body pose recognition module.
@@ -11,11 +11,11 @@ This is an example using the Tello SDK v1.3.0.0 and above to receive video strea
 
 - Python3.7
 - pip
-- Python OpenCV
+- Python OpenCV '4.2.0'
 - Numpy 
 - PIL
 - libboost-python
-- Tkinter
+- tkinter 8.6
 - homebrew(for mac)
 - (obsolete now, we use opencv udp capability now) Python h264 decoder 
     - <https://github.com/DaWelter/h264decoder>

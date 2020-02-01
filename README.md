@@ -13,6 +13,8 @@ This toolkit contains three sample programs based on tello sdk and python2.7,inc
  In Single_Tello_Test,You can design a series of command combinations by writing a txt script to let tello execute a series of actions you have designed. This program can also be used as a command set test tool for tello.
 
 - **Tello_Video**
+ 
+ Tello_Video is migrated to Phyton 3.7, h264decoder is replaced by opencv built in capabilty to read udp videostreams.
 
  In Tello_Video，You can receive the video stream data from tello, decode the video through the h264 decoding library, and display it on a GUI interface based on Tkinter and PIL. In addition, it also supports a control panel that can operate tello. This sample code provides an example of receiving and processing and getting the correct video data. The source code of the h264 decoding library is also provided in the package, which can be used for your reference.
 
