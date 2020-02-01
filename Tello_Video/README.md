@@ -3,13 +3,13 @@
 This is an example using the Tello SDK v1.3.0.0 and above to receive video stream from Tello camera,decode the video stream and show the image by GUI.
 
  - Written in Python 2.7
- - Tello SDK v1.3.0.0 and above(with h.264 video streaming)
+ - Tello SDK v1.3.0.0
  - This example includes a simple UI build with Tkinter to interact with Tello
  - Interactive control of Tello based on human movement is achieved via body pose recognition module.
 
 ## Prerequisites
 
-- Python2.7
+- Python3.7
 - pip
 - Python OpenCV
 - Numpy 
@@ -17,12 +17,14 @@ This is an example using the Tello SDK v1.3.0.0 and above to receive video strea
 - libboost-python
 - Tkinter
 - homebrew(for mac)
-- Python h264 decoder
+- (obsolete now, we use opencv udp capability now) Python h264 decoder 
     - <https://github.com/DaWelter/h264decoder>
 
 ## Installation
 
 In order to facilitate you to install python2.7 and various dependencies, we have written a one-click installation script for windows, Linux and macos. You can choose to run this script for the one-click installation, or you can download python2.7 and related libraries and dependencies online. If you have questions about the actions that the script performs, you can open the script with an editor and look up the comments for each instruction in the script. In addition, we have additionally written an uninstall script that cleans and restores all downloaded and configured content from the one-click installation script.
+
+*** This become obsolete and has to be updated for Python 3.7 and above  
 
 - **Windows**
 
@@ -98,26 +100,10 @@ Modified from: https://www.pyimagesearch.com/2016/05/30/displaying-a-video-feed-
 
 Build with Tkinter. Display video, control video play/pause and control Tello using buttons and arrow keys.
 
-### h264decoder - class libh264decoder
-
-From <https://github.com/DaWelter/h264decoder>.
-
-A c++ based class that decodes raw h264 data. This module interacts with python language via python-libboost library, and its decoding functionality is based on ffmpeg library. 
-
-After compilation, a libh264decoder.so or libh264decoder.pyd file will be placed in the working directory so that the main python file can reference it. 
-
-If you have to compile it from source,with Linux or Mac,you can:
-
-```
-cd h264decoder
-mkdir build
-cd build
-cmake ..
-make
-cp libh264decoder.so ../../
-```
-With Windows,you can create a project through visual studio, add files in h264decoder and dependencies such as ffmpeg and libboost, compile the project and generate a libh264decoder.pyd file.We have generated a libh264decoder.pyd and put it in the "\h264decoder\Windows"foleder so that you can copy put it to "python/site-package".
+### h264decoder - class libh264decoder is obsolete now and not used any longer 
 
 ##Contact Information
 
-If you have any questions about this sample code and the installation, please feel free to contact me. You can communicate with me by sending e-mail to sdk@ryzerobotics.com.
+For this version contact https://tellopilots.com/members/f41ardu.5317/ 
+If you have any further questions about this sample code and the installation, please feel free to contact me. You can communicate with me by sending e-mail to sdk@ryzerobotics.com.
+
