@@ -2,8 +2,6 @@
 import socket
 import threading
 import time
-import numpy as np
-import cv2
 
 class Tello:
     """Wrapper class to interact with the Tello drone."""
@@ -29,21 +27,14 @@ class Tello:
         self.frame = None  # numpy array BGR -- current camera output frame
         self.is_freeze = False  # freeze current camera output
         self.last_frame = None
+        self.ret = False
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # socket for sending cmd
         
-        self.telloVideo = cv2.VideoCapture("udp://@0.0.0.0:11111")
-        # self.telloVideo = cv2.VideoCapture(0) # for debugging purpose
-        # thread for receiving video
-        self.receive_video_thread = threading.Thread(target=self._receive_video_thread)
-        self.receive_video_thread.daemon = True
-
-        self.receive_video_thread.start()
         self.tello_address = (tello_ip, tello_port)
         #self.local_video_port = 11111  # port for receiving video stream
         self.last_height = 0
         self.socket.bind((local_ip, local_port))
-        self.scale = 2 # For improved video performance on an Raspberry PI 3+ 
-
+        
         # thread for receiving cmd ack
         self.receive_thread = threading.Thread(target=self._receive_thread)
         self.receive_thread.daemon = True
@@ -68,21 +59,7 @@ class Tello:
         """Closes the local socket."""
 
         self.socket.close()
-        self.socket_video.close()
     
-    def read(self):
-        """Return the last frame from camera."""
-        if self.is_freeze:
-            return self.last_frame
-        else:
-            return self.frame
-
-    def video_freeze(self, is_freeze=True):
-        """Pause video output -- set is_freeze to True"""
-        self.is_freeze = is_freeze
-        if is_freeze:
-            self.last_frame = self.frame
-
     def _receive_thread(self):
         """Listen to responses from the Tello.
 
@@ -96,29 +73,7 @@ class Tello:
             except socket.error as exc:
                 print ("Caught exception socket.error : %s" % exc)
 
-    def _receive_video_thread(self):
-        """
-        Listens for video streaming (raw h264) from the Tello.
-
-        Runs as a thread, sets self.frame to the most recent frame Tello captured.
-
-        """
-        while True:
-            # Capture frame-by-framestreamon
-            ret, frame = self.telloVideo.read()
-            
-            if(ret): 
-            # Our operations on the frame come here
-                height , width , layers =  frame.shape
-                # print("height :", height, " width :", width)
-                new_h=int(height/self.scale)
-                new_w=int(width/self.scale)
-                
-            # return the resulting frame
-                b,g,r=cv2.split(cv2.resize(frame, (new_w, new_h)))
-                frame0=cv2.merge([r,g,b])
-                self.frame = frame0
-                
+                                           
                     
     def send_command(self, command):
         """
