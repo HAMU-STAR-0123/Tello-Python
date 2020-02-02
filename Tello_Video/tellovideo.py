@@ -4,7 +4,10 @@ import time
 #import numpy as np
 import cv2
 
-class telloVideo:
+class TelloVideo:
+    """Wrapper class to read and visualize
+       Tello drone video stream.
+    """
     def __init__(self, src=0):
         self.capture = cv2.VideoCapture(src)
         # Start the thread to read frames from the video stream
@@ -20,13 +23,13 @@ class telloVideo:
             time.sleep(.001)
 
     def show_frame(self,scale=1):
-        # Display frames in main program
         height , width , layers = self.frame.shape
         new_h=int(height/scale)
         new_w=int(width/scale)
-        resize = cv2.resize(self.frame, (new_w, new_h))
+        if new_h > 0 :
+            resize = cv2.resize(self.frame, (new_w, new_h))
         # Display the resulting frame
-        cv2.imshow('Tello', resize)
+            cv2.imshow('Tello', resize)
          
         #return resize
 
