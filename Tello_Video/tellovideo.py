@@ -4,7 +4,7 @@ import time
 #import numpy as np
 import cv2
 
-class TelloVideo:
+class Video:
     """Wrapper class to read and visualize
        Tello drone video stream.
     """
